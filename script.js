@@ -4,21 +4,30 @@ var output = document.getElementById("output");
 var completed = document.getElementById("complete");
 part.style.visibility = "hidden";
 part2.style.visibility = "hidden";
-var result = document.getElementById("accordionExample");
-result.style.visibility = "hidden";
 var currentStatus = false;
 var nos = document.getElementById("nos");
 var section = document.getElementById("section");
 var file = [];
 var subj = []; 
 var button = document.getElementById("sum");
+var listcontent;
+var list = document.getElementById("list");
+var strength = document.getElementById("strength");
+var out;
+var outAbsent;
+var fp = document.getElementById("fp");
+fp.style.visibility = "hidden";
 
 function formSubmit(){
-    if(document.getElementById('section').value == 0){
+    if(section.value == 0){
        part2.style.visibility = "visible";
        part2.innerHTML = '<div class="alert alert-warning" role="alert">Please select your Section!</div>'     
     }
-    else if(document.getElementById('nos').value == 0){
+    else if(strength.value == 0){
+        part2.style.visibility = "visible";
+        part2.innerHTML = '<div class="alert alert-warning" role="alert">Please type your Class Strength!</div>' 
+    }
+    else if(nos.value == 0){
         part2.style.visibility = "visible";
         part2.innerHTML = '<div class="alert alert-warning" role="alert">Please select No of screenshots!</div>' 
     }
@@ -30,8 +39,6 @@ function formSubmit(){
 
 function generate()
 {
-    var nos = document.getElementById("nos");
-    var section = document.getElementById("section");
     var content = [];
 
     for (var i = 0; i < nos.value;i++)
@@ -39,7 +46,7 @@ function generate()
         content = content + '<div class="row"><input id="subject' + (i+1) + '" type="text" class="form-control" placeholder="Subject' + (i+1) +'"><br><br><input class="form" type="file" id="file-selector' + (i+1) + '"></div><br>';
     }
 
-    content = content + '<br><input type="submit" value="Calculate" id="sum">';
+    content = content + '<br><input onclick="clickHandler();" type="submit" value="Calculate" id="sum">';
 
     document.getElementById("main").innerHTML = content;
 
@@ -49,43 +56,39 @@ function generate()
 }
 
 function clickHandler(){
+    part.style.visibility = "hidden";
+    part2.style.visibility = "hidden";
     if(!currentStatus){
         for (i = 0; i < nos.value; i++){
             file[i] = document.getElementById("file-selector" + (i+1)).files[0];
             subj[i] = document.getElementById("subject" + (i+1)).value;
             if (document.getElementById("file-selector" + (i+1)).files.length == 0){
-                output.innerHTML = "";
-                completed.innerHTML = "";
                 part2.style.visibility = "visible";
                 part2.innerHTML = '<div class="alert alert-warning" role="alert">Any file input must not be empty!</div>';
-                currentStatus = false;
                 return;
             }
         }
 
         for (i = 0; i < nos.value; i++){
-            output.innerHTML = "";
-            completed.innerHTML = "";
-            part2.innerHTML = "";
-            part.style.visibility = "visible";
+            fp.innerHTML = '<div class="accordion" id="accordionExample" style="width: 95%; margin: auto;"><div class="card"><div class="card-header" id="headingOne"><h2 class="mb-0"><button class="btn btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">Presentees</button></h2></div><div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample"><div id="Presentees" class="card-body"></div></div></div><div class="card"><div class="card-header" id="headingTwo"><h2 class="mb-0"><button class="btn btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">Absentees</button></h2></div><div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample"><div id="Absentees" class="card-body"></div></div></div><div class="card"><div class="card-header" id="headingThree"><h2 class="mb-0"><button class="btn btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">Output</button></h2></div><div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample"><div id="list" class="card-body"></div></div></div></div>';
+            part.style.visibility = visible;
             output.innerHTML = "Processing";
-            present = [];
+            completed.innerHTML = "Please wait... It may take a few minutes..."
             Tesseract.recognize(
-            file,
+            file[i],
             'eng',
-            { logger: m => completed.innerHTML = Math.round(m.progress.toFixed(2) * 100 ) + "%"}
-            ).then(({ data: { text } }) => {console.log(text); txt = text;lists.innerHTML = txt;var tmp = "";
-            output.innerHTML = "";
-            completed.innerHTML = "";
+            { logger: m => console.log(m)}
+            ).then(({ data: { text } }) => {console.log(text); txt = text;listcontent = listcontent + subj[i] + ':<br><br>' + txt + '<br><br>';var tmp = "";
             part.style.visibility = "hidden";
-            part2.style.visibility = "visible";
-            part2.innerHTML = "<div class='alert alert-success' role='alert'>Completed</div>";
+            currentStatus = true;
+            part.style.visibility = "visible";
+            present = [];
         
                 for(i =0; i < txt.length;i++)
             {
                 txt = txt.replace(" ","");
                 tmp ="";
-                if (txt.charAt(i) === "C"){
+                if (txt.charAt(i) === section.value){
                     if (!isNaN (txt.charAt(i+1))){
                         tmp = txt.charAt(i+1).toString();
                         if(!isNaN(txt.charAt(i+2))){
@@ -100,24 +103,30 @@ function clickHandler(){
         
             }
             console.log(present);
-            var out = "";
+            out = subj[i] + ':<br><br>';
             present.sort();
             for(var a = 0;a < present.length;a++){
                 out = out + present[a] + ", ";
             }
-            document.getElementById("Presentees").innerHTML = out;
+
+            out = out + '<br><br>';
         
-            var outAbsent = "";
-            present.push(6);
-            present.push(22);
-            for(var b = 1;b <= 47;b++){
+            outAbsent = subj[i] + '<br><br>';
+            for(var b = 1;b <= strength.value;b++){
                 if(!present.includes(b)){
                     outAbsent = outAbsent + b + ", ";
                 }
             }
+            output.innerHTML = '';
+            completed.innerHTML = '';
+            part.style.visibility = "hidden";
+            part2.style.visibility = "visible";
+            part2.innerHTML = '<div class="alert alert-success" role="alert">Completed!</div>';
+            document.getElementById("Presentees").innerHTML = out;
             document.getElementById("Absentees").innerHTML = outAbsent;
-            result.style.visibility = "visible";
+            list.innerHTML = listcontent;
             currentStatus = false;
+            fp.style.visibility = "visible";
         
             });
         }
@@ -130,5 +139,5 @@ function clickHandler(){
     }
 }
 
-button.addEventListener("click",clickHandler);
+
 
