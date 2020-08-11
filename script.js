@@ -43,7 +43,7 @@ function generate()
 
     for (var i = 0; i < nos.value;i++)
     {
-        content = content + '<div class="row"><input id="subject' + (i+1) + '" type="text" class="form-control" placeholder="Subject' + (i+1) +'"><br><br><input class="form" type="file" id="file-selector' + (i+1) + '"></div><br>';
+        content = content + '<div class="row"><input id="subject' + (i+1) + '" type="text" class="form-control" placeholder="Subject ' + (i+1) +'"><br><br><input class="form" type="file" id="file-selector' + (i+1) + '"></div><br>';
     }
 
     content = content + '<br><input onclick="clickHandler();" type="submit" value="Calculate" id="sum">';
@@ -56,6 +56,7 @@ function generate()
 }
 
 function clickHandler(){
+    fp.innerHTML = '<div class="accordion" id="accordionExample" style="width: 95%; margin: auto;"><div class="card"><div class="card-header" id="headingOne"><h2 class="mb-0"><button class="btn btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">Presentees</button></h2></div><div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample"><div id="Presentees" class="card-body"></div></div></div><div class="card"><div class="card-header" id="headingTwo"><h2 class="mb-0"><button class="btn btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">Absentees</button></h2></div><div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample"><div id="Absentees" class="card-body"></div></div></div><div class="card"><div class="card-header" id="headingThree"><h2 class="mb-0"><button class="btn btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">Output</button></h2></div><div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample"><div id="list" class="card-body"></div></div></div></div>';
     part.style.visibility = "hidden";
     part2.style.visibility = "hidden";
     if(!currentStatus){
@@ -70,15 +71,14 @@ function clickHandler(){
         }
 
         for (i = 0; i < nos.value; i++){
-            fp.innerHTML = '<div class="accordion" id="accordionExample" style="width: 95%; margin: auto;"><div class="card"><div class="card-header" id="headingOne"><h2 class="mb-0"><button class="btn btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">Presentees</button></h2></div><div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample"><div id="Presentees" class="card-body"></div></div></div><div class="card"><div class="card-header" id="headingTwo"><h2 class="mb-0"><button class="btn btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">Absentees</button></h2></div><div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample"><div id="Absentees" class="card-body"></div></div></div><div class="card"><div class="card-header" id="headingThree"><h2 class="mb-0"><button class="btn btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">Output</button></h2></div><div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample"><div id="list" class="card-body"></div></div></div></div>';
-            part.style.visibility = visible;
+            part.style.visibility = "visible";
             output.innerHTML = "Processing";
             completed.innerHTML = "Please wait... It may take a few minutes..."
             Tesseract.recognize(
             file[i],
             'eng',
             { logger: m => console.log(m)}
-            ).then(({ data: { text } }) => {console.log(text); txt = text;listcontent = listcontent + subj[i] + ':<br><br>' + txt + '<br><br>';var tmp = "";
+            ).then(({ data: { text } }) => {console.log(text); txt = text; listcontent = listcontent + subj[i] + ':<br><br>' + txt + '<br><br>';var tmp = "";
             part.style.visibility = "hidden";
             currentStatus = true;
             part.style.visibility = "visible";
@@ -124,7 +124,6 @@ function clickHandler(){
             part2.innerHTML = '<div class="alert alert-success" role="alert">Completed!</div>';
             document.getElementById("Presentees").innerHTML = out;
             document.getElementById("Absentees").innerHTML = outAbsent;
-            list.innerHTML = listcontent;
             currentStatus = false;
             fp.style.visibility = "visible";
         
