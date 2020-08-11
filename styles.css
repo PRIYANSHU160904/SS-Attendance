@@ -25,16 +25,17 @@ h1, h6, h2, h3 {
     background-color: grey;
 }
 
-.form {
-    border-style: solid;
+.form, .form-control {
     border-radius: 5px;
     border-width: 1px;
-    border-color: black;
-    background-color: whitesmoke;
+    color: white;
+    background-color: #252525;
+    margin: auto;
 }
 
-.form:hover {
-    background-color: lightgrey;
+.form:hover, .form-control:hover, .form-control:focus {
+    color: white;
+    background-color: black;
 }
 
 #sum {
@@ -67,11 +68,17 @@ h1, h6, h2, h3 {
     width: 100%;
 }
 
-.custom-select {
+.custom-select, #strength {
     background-color: #252525;
     color: white;
 }
 
-.custom-select:hover {
+.custom-select:hover, #strength:hover {
     background-color: black;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
 }
