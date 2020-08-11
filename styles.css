@@ -1,0 +1,77 @@
+body {
+    --stripe: #cfd8dc;
+    --bg: #e1e1e1;
+  
+    background: linear-gradient(135deg, var(--bg) 25%, transparent 25%) -50px 0,
+      linear-gradient(225deg, var(--bg) 25%, transparent 25%) -50px 0,
+      linear-gradient(315deg, var(--bg) 25%, transparent 25%),
+      linear-gradient(45deg, var(--bg) 25%, transparent 25%);
+    background-size: 100px 100px;
+    background-color: var(--stripe);
+  }
+
+h1, h6, h2, h3 {
+    text-align: center; 
+    font-weight:bold;
+}
+
+.round {
+    margin: auto;
+    text-align: center;
+    padding: 30px;
+    height: auto;
+    width: fit-content;
+    border-radius: 5px;
+    background-color: grey;
+}
+
+.form {
+    border-style: solid;
+    border-radius: 5px;
+    border-width: 1px;
+    border-color: black;
+    background-color: whitesmoke;
+}
+
+.form:hover {
+    background-color: lightgrey;
+}
+
+#sum {
+    border-radius: 5px;
+    background-color: #252525;
+    color: white;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    font-size: large;
+    border: none;
+}
+
+#sum:hover, .btn:hover {
+    background-color: black;
+    color: white;
+}
+
+.card-header {
+    background-color: grey;
+}
+
+.btn {
+    color: white;
+    background-color: #252525;
+}
+
+.alert {
+    width: 100%;
+}
+
+.custom-select {
+    background-color: #252525;
+    color: white;
+}
+
+.custom-select:hover {
+    background-color: black;
+}
